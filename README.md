@@ -1,6 +1,6 @@
 # Go Starter Kit
 
-A production-ready Go REST API starter kit based on **Echo v4**, **PostgreSQL**, **sqlc**, and **JWT** — mirroring the architecture of `kadin-coo-service`.
+A production-ready Go REST API starter kit based on **Echo v4**, **PostgreSQL**, **sqlc**, and **JWT**
 
 ## 🏗️ Project Structure
 
