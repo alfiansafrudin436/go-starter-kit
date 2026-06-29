@@ -1,6 +1,8 @@
 package user
 
 import (
+	"database/sql"
+	"errors"
 	"go-starter-kit/app/user/repository"
 	"go-starter-kit/config"
 	"go-starter-kit/utils"
@@ -52,7 +54,7 @@ func (u *Usecase) GetByID(c echo.Context) error {
 
 	ctx := c.Request().Context()
 	user, err := u.repo.GetUserByID(ctx, id)
-	if err != nil {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return c.JSON(http.StatusNotFound, utils.ResponseError("Pengguna tidak ditemukan"))
 	}
 
@@ -75,7 +77,7 @@ func (u *Usecase) Update(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	// Check if user exists
-	if _, err := u.repo.GetUserByID(ctx, id); err != nil {
+	if _, err := u.repo.GetUserByID(ctx, id); err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return c.JSON(http.StatusNotFound, utils.ResponseError("Pengguna tidak ditemukan"))
 	}
 
@@ -101,7 +103,7 @@ func (u *Usecase) Delete(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	// Check if user exists
-	if _, err := u.repo.GetUserByID(ctx, id); err != nil {
+	if _, err := u.repo.GetUserByID(ctx, id); err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return c.JSON(http.StatusNotFound, utils.ResponseError("Pengguna tidak ditemukan"))
 	}
 

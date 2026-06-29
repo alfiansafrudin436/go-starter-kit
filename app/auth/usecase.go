@@ -2,6 +2,7 @@ package auth
 
 import (
 	"database/sql"
+	"errors"
 	"go-starter-kit/app/auth/repository"
 	"go-starter-kit/config"
 	"go-starter-kit/utils"
@@ -75,7 +76,7 @@ func (u *Usecase) Register(c echo.Context) error {
 
 	// Check if email is already taken
 	_, err := u.repo.GetUserByEmail(ctx, req.Email)
-	if err != nil {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return c.JSON(http.StatusConflict, utils.ResponseError("Email sudah digunakan"))
 	}
 
@@ -129,7 +130,7 @@ func (u *Usecase) ValidateToken(c echo.Context) error {
 	}
 
 	user, err := u.repo.GetUserByID(ctx, userID)
-	if err != nil {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return c.JSON(http.StatusUnauthorized, utils.ResponseError("Pengguna tidak ditemukan"))
 	}
 
@@ -155,7 +156,7 @@ func (u *Usecase) RefreshToken(c echo.Context) error {
 	}
 
 	user, err := u.repo.GetUserByID(ctx, userID)
-	if err != nil {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return c.JSON(http.StatusUnauthorized, utils.ResponseError("Pengguna tidak ditemukan"))
 	}
 
@@ -225,7 +226,7 @@ func (u *Usecase) ResetPassword(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	user, err := u.repo.GetUserByResetToken(ctx, sql.NullString{String: tokenStr, Valid: true})
-	if err != nil {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return c.JSON(http.StatusBadRequest, utils.ResponseError("Token tidak valid atau sudah kadaluarsa"))
 	}
 
