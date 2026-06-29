@@ -36,7 +36,7 @@ func (u *Usecase) GetAll(c echo.Context) error {
 	}
 
 	if users == nil {
-		users = []repository.User{}
+		users = []repository.GetAllUsersRow{}
 	}
 
 	return c.JSON(http.StatusOK, utils.ResponseOK(users))

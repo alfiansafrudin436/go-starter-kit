@@ -14,8 +14,8 @@ import (
 
 // Usecase handles all auth business logic
 type Usecase struct {
-	repo    repository.AuthRepository
-	appCfg  *config.App
+	repo   repository.AuthRepository
+	appCfg *config.App
 }
 
 // NewUsecase creates a new auth Usecase
@@ -74,8 +74,8 @@ func (u *Usecase) Register(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	// Check if email is already taken
-	existing, _ := u.repo.GetUserByEmail(ctx, req.Email)
-	if existing != nil {
+	_, err := u.repo.GetUserByEmail(ctx, req.Email)
+	if err != nil {
 		return c.JSON(http.StatusConflict, utils.ResponseError("Email sudah digunakan"))
 	}
 

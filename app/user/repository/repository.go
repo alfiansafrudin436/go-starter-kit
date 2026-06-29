@@ -9,8 +9,8 @@ import (
 
 // UserRepository defines the interface for user data operations
 type UserRepository interface {
-	GetAllUsers(ctx context.Context) ([]User, error)
-	GetUserByID(ctx context.Context, id uuid.UUID) (*User, error)
+	GetAllUsers(ctx context.Context) ([]GetAllUsersRow, error)
+	GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow, error)
 	UpdateUserName(ctx context.Context, arg UpdateUserNameParams) error
 	DeactivateUser(ctx context.Context, id uuid.UUID) error
 }
@@ -28,11 +28,11 @@ func NewRepository() *Repository {
 	}
 }
 
-func (r *Repository) GetAllUsers(ctx context.Context) ([]User, error) {
+func (r *Repository) GetAllUsers(ctx context.Context) ([]GetAllUsersRow, error) {
 	return r.query.GetAllUsers(ctx)
 }
 
-func (r *Repository) GetUserByID(ctx context.Context, id uuid.UUID) (*User, error) {
+func (r *Repository) GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow, error) {
 	return r.query.GetUserByID(ctx, id)
 }
 

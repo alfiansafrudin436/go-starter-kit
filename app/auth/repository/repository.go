@@ -10,12 +10,12 @@ import (
 
 // AuthRepository defines the interface for auth data operations
 type AuthRepository interface {
-	GetUserByEmail(ctx context.Context, email string) (*User, error)
-	GetUserByID(ctx context.Context, id uuid.UUID) (*GetUserByIDRow, error)
+	GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error)
+	GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (uuid.UUID, error)
 	UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) error
 	UpdateUserResetToken(ctx context.Context, arg UpdateUserResetTokenParams) error
-	GetUserByResetToken(ctx context.Context, token sql.NullString) (*GetUserByResetTokenRow, error)
+	GetUserByResetToken(ctx context.Context, token sql.NullString) (GetUserByResetTokenRow, error)
 }
 
 // Repository implements AuthRepository
@@ -31,11 +31,11 @@ func NewRepository() *Repository {
 	}
 }
 
-func (r *Repository) GetUserByEmail(ctx context.Context, email string) (*User, error) {
+func (r *Repository) GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error) {
 	return r.query.GetUserByEmail(ctx, email)
 }
 
-func (r *Repository) GetUserByID(ctx context.Context, id uuid.UUID) (*GetUserByIDRow, error) {
+func (r *Repository) GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow, error) {
 	return r.query.GetUserByID(ctx, id)
 }
 
@@ -51,6 +51,6 @@ func (r *Repository) UpdateUserResetToken(ctx context.Context, arg UpdateUserRes
 	return r.query.UpdateUserResetToken(ctx, arg)
 }
 
-func (r *Repository) GetUserByResetToken(ctx context.Context, token sql.NullString) (*GetUserByResetTokenRow, error) {
+func (r *Repository) GetUserByResetToken(ctx context.Context, token sql.NullString) (GetUserByResetTokenRow, error) {
 	return r.query.GetUserByResetToken(ctx, token)
 }
